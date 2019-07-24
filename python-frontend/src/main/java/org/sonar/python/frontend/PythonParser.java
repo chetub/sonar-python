@@ -26,6 +26,7 @@ import com.intellij.core.CoreFileTypeRegistry;
 import com.intellij.core.CoreModuleManager;
 import com.intellij.core.CoreProjectJdkTable;
 import com.intellij.core.CoreProjectScopeBuilder;
+import com.intellij.execution.configurations.ConfigurationType;
 import com.intellij.ide.util.AppPropertiesComponentImpl;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.ide.util.PropertiesComponentImpl;
@@ -161,6 +162,7 @@ import com.jetbrains.python.psi.impl.PyImportResolver;
 import com.jetbrains.python.psi.impl.PyPsiFacadeImpl;
 import com.jetbrains.python.psi.impl.PyResolveResultRater;
 import com.jetbrains.python.psi.impl.PyTypeProvider;
+import com.jetbrains.python.psi.impl.references.PyReferenceCustomTargetChecker;
 import com.jetbrains.python.psi.resolve.PyCanonicalPathProvider;
 import com.jetbrains.python.psi.resolve.PyForwardReferenceResolveProvider;
 import com.jetbrains.python.psi.resolve.PyReferenceResolveProvider;
@@ -181,6 +183,8 @@ import com.jetbrains.python.pyi.PyiParserDefinition;
 import com.jetbrains.python.pyi.PyiTypeProvider;
 import com.jetbrains.python.sdk.PythonSdkType;
 import com.jetbrains.python.sdk.flavors.PythonFlavorProvider;
+import com.jetbrains.python.testing.PythonTestConfigurationType;
+import com.jetbrains.python.testing.pyTestFixtures.PyTestFixtureTargetChecker;
 import com.jetbrains.python.testing.pyTestParametrized.PyTestParametrizedTypeProvider;
 import com.sonar.sslr.api.RecognitionException;
 import java.io.File;
@@ -290,6 +294,9 @@ public class PythonParser {
     registerExtensionPoint(PythonDialectsTokenSetContributor.EP_NAME, PythonDialectsTokenSetContributor.class);
     registerExtension(PythonDialectsTokenSetContributor.EP_NAME, new PythonTokenSetContributor());
 
+    registerExtensionPoint(ConfigurationType.CONFIGURATION_TYPE_EP, ConfigurationType.class);
+    registerExtension(ConfigurationType.CONFIGURATION_TYPE_EP, new PythonTestConfigurationType());
+
     registerExtensionPoint(IndexableSetContributor.EP_NAME, IndexableSetContributor.class);
     registerExtensionPoint(AdditionalLibraryRootsProvider.EP_NAME, AdditionalLibraryRootsProvider.class);
 
@@ -313,6 +320,9 @@ public class PythonParser {
     registerExtensionPoint(FileTypeFactory.FILE_TYPE_FACTORY_EP, FileTypeFactory.class);
     registerExtension(PythonFileTypeFactory.FILE_TYPE_FACTORY_EP, new PythonFileTypeFactory());
     registerExtension(PythonFileTypeFactory.FILE_TYPE_FACTORY_EP, new PyiFileTypeFactory());
+
+    registerExtensionPoint(PyReferenceCustomTargetChecker.Companion.getEP_NAME(), PyReferenceCustomTargetChecker.class);
+    registerExtension(PyReferenceCustomTargetChecker.Companion.getEP_NAME(), new PyTestFixtureTargetChecker());
 
     registerExtensionPoint(PyReferenceResolveProvider.EP_NAME, PyReferenceResolveProvider.class);
     registerExtension(PyReferenceResolveProvider.EP_NAME, new PyForwardReferenceResolveProvider());

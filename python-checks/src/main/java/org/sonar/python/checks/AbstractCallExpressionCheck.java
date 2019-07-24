@@ -46,30 +46,27 @@ public abstract class AbstractCallExpressionCheck extends PythonCheck {
     context.registerSyntaxNodeConsumer(PyElementTypes.INTEGER_LITERAL_EXPRESSION, ctx -> {
       PyExpression node = (PyExpression) ctx.syntaxNode();
       TypeEvalContext typeEvalContext = TypeEvalContext.codeAnalysis(node.getContainingFile().getProject(), node.getContainingFile());
-      TypeEvalContext typeEvalContext2 = TypeEvalContext.deepCodeInsight(node.getContainingFile().getProject());
       PyType type = typeEvalContext.getType(node);
-      System.out.println(type);
-      PyType type2 = typeEvalContext2.getType(node);
-      System.out.println(type2);
+//      System.out.println(type);
     });
 
     context.registerSyntaxNodeConsumer(PyElementTypes.CALL_EXPRESSION, ctx -> {
       PyCallExpression node = (PyCallExpression) ctx.syntaxNode();
-      System.out.println("******");
-      System.out.println(node.getText());
+//      System.out.println("******");
+//      System.out.println(node.getText());
       PyExpression callee = node.getCallee();
       if (callee instanceof PyReferenceExpression) {
         PyReferenceExpression referenceExpression = (PyReferenceExpression) callee;
 
         PsiPolyVariantReference reference = referenceExpression.getReference();
         if (reference == null) {
-          System.out.println("null: " + callee.getText());
+//          System.out.println("null: " + callee.getText());
         }
         TypeEvalContext typeEvalContext = TypeEvalContext.codeAnalysis(node.getContainingFile().getProject(), node.getContainingFile());
         PyType type = typeEvalContext.getType(node);
-        System.out.println("call return type: " + type);
+//        System.out.println("call return type: " + type);
         PsiElement resolve = reference.resolve();
-        System.out.println(resolve);
+//        System.out.println(resolve);
 //        System.out.println(resolve.getText());
 //        Collection<? extends SymbolResolveResult> symbolResolveResults = reference.resolveReference();
 //        for (SymbolResolveResult symbolResolveResult : symbolResolveResults) {
