@@ -19,13 +19,17 @@
  */
 package org.sonar.python.checks;
 
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiPolyVariantReference;
+import com.jetbrains.python.PyElementTypes;
+import com.jetbrains.python.psi.PyCallExpression;
+import com.jetbrains.python.psi.PyExpression;
+import com.jetbrains.python.psi.PyReferenceExpression;
+import com.jetbrains.python.psi.types.PyType;
+import com.jetbrains.python.psi.types.TypeEvalContext;
 import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.AstNodeType;
-import java.util.Collections;
 import java.util.Set;
 import org.sonar.python.PythonCheck;
-import org.sonar.python.api.PythonGrammar;
-import org.sonar.python.semantic.Symbol;
 
 public abstract class AbstractCallExpressionCheck extends PythonCheck {
 
@@ -38,15 +42,44 @@ public abstract class AbstractCallExpressionCheck extends PythonCheck {
   }
 
   @Override
-  public Set<AstNodeType> subscribedKinds() {
-    return Collections.singleton(PythonGrammar.CALL_EXPR);
-  }
+  public void initialize(Context context) {
+    context.registerSyntaxNodeConsumer(PyElementTypes.INTEGER_LITERAL_EXPRESSION, ctx -> {
+      PyExpression node = (PyExpression) ctx.syntaxNode();
+      TypeEvalContext typeEvalContext = TypeEvalContext.codeAnalysis(node.getContainingFile().getProject(), node.getContainingFile());
+      TypeEvalContext typeEvalContext2 = TypeEvalContext.deepCodeInsight(node.getContainingFile().getProject());
+      PyType type = typeEvalContext.getType(node);
+      System.out.println(type);
+      PyType type2 = typeEvalContext2.getType(node);
+      System.out.println(type2);
+    });
 
-  @Override
-  public void visitNode(AstNode node) {
-    Symbol symbol = getContext().symbolTable().getSymbol(node);
-    if (!isException(node) && symbol != null && functionsToCheck().contains(symbol.qualifiedName())) {
-      addIssue(node, message());
-    }
+    context.registerSyntaxNodeConsumer(PyElementTypes.CALL_EXPRESSION, ctx -> {
+      PyCallExpression node = (PyCallExpression) ctx.syntaxNode();
+      System.out.println("******");
+      System.out.println(node.getText());
+      PyExpression callee = node.getCallee();
+      if (callee instanceof PyReferenceExpression) {
+        PyReferenceExpression referenceExpression = (PyReferenceExpression) callee;
+
+        PsiPolyVariantReference reference = referenceExpression.getReference();
+        if (reference == null) {
+          System.out.println("null: " + callee.getText());
+        }
+        TypeEvalContext typeEvalContext = TypeEvalContext.codeAnalysis(node.getContainingFile().getProject(), node.getContainingFile());
+        PyType type = typeEvalContext.getType(node);
+        System.out.println("call return type: " + type);
+        PsiElement resolve = reference.resolve();
+        System.out.println(resolve);
+//        System.out.println(resolve.getText());
+//        Collection<? extends SymbolResolveResult> symbolResolveResults = reference.resolveReference();
+//        for (SymbolResolveResult symbolResolveResult : symbolResolveResults) {
+//          System.out.println(symbolResolveResult.getTarget());
+//        }
+      }
+//      Symbol symbol = getContext().symbolTable().getSymbol(node);
+//      if (!isException(node) && symbol != null && functionsToCheck().contains(symbol.qualifiedName())) {
+//        addIssue(node, message());
+//      }
+    });
   }
 }

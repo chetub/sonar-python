@@ -23,3 +23,12 @@ def builtins():
 def optparse_test():
     OptionParser() # Noncompliant
     optparse.OptionParser() # Noncompliant
+
+def foo():
+    return 1
+
+foo()
+
+from mypackage.myfile import innerfun
+
+innerfun()
