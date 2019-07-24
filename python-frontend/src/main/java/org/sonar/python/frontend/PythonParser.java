@@ -139,7 +139,6 @@ import com.jetbrains.python.codeInsight.stdlib.PyNamedTupleOverridingTypeProvide
 import com.jetbrains.python.codeInsight.stdlib.PyNamedTupleTypeProvider;
 import com.jetbrains.python.codeInsight.stdlib.PyStdlibCanonicalPathProvider;
 import com.jetbrains.python.codeInsight.stdlib.PyStdlibClassMembersProvider;
-import com.jetbrains.python.codeInsight.stdlib.PyStdlibModuleMembersProvider;
 import com.jetbrains.python.codeInsight.stdlib.PyStdlibOverridingModuleMembersProvider;
 import com.jetbrains.python.codeInsight.stdlib.PyStdlibTypeProvider;
 import com.jetbrains.python.codeInsight.typing.PyAncestorTypeProvider;
@@ -355,7 +354,7 @@ public class PythonParser {
     registerExtension(PyResolveResultRater.EP_NAME, new NumpyResolveRater());
 
     registerExtensionPoint(PyModuleMembersProvider.EP_NAME, PyModuleMembersProvider.class);
-    registerExtension(PyModuleMembersProvider.EP_NAME, new PyStdlibModuleMembersProvider());
+//    registerExtension(PyModuleMembersProvider.EP_NAME, new PyStdlibModuleMembersProvider()); // loading icon
     registerExtension(PyModuleMembersProvider.EP_NAME, new PyStdlibOverridingModuleMembersProvider());
     registerExtension(PyModuleMembersProvider.EP_NAME, new PyiModuleMembersProvider());
     registerExtension(PyModuleMembersProvider.EP_NAME, new PyUserSkeletonsModuleMembersProvider());
