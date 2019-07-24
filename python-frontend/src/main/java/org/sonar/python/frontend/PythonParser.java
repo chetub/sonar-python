@@ -53,6 +53,7 @@ import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.extensions.ExtensionsArea;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.fileTypes.FileTypeConsumer;
 import com.intellij.openapi.fileTypes.FileTypeFactory;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.fileTypes.FileTypeRegistry;
@@ -197,6 +198,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.annotation.Nullable;
 import kotlin.jvm.functions.Function1;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 public class PythonParser {
@@ -318,7 +320,7 @@ public class PythonParser {
     registerExtension(PyTypeProvider.EP_NAME, new PyAncestorTypeProvider());
 
     registerExtensionPoint(FileTypeFactory.FILE_TYPE_FACTORY_EP, FileTypeFactory.class);
-    registerExtension(PythonFileTypeFactory.FILE_TYPE_FACTORY_EP, new PythonFileTypeFactory());
+    registerExtension(PythonFileTypeFactory.FILE_TYPE_FACTORY_EP, new MyPythonFileTypeFactory());
     registerExtension(PythonFileTypeFactory.FILE_TYPE_FACTORY_EP, new PyiFileTypeFactory());
 
     registerExtensionPoint(PyReferenceCustomTargetChecker.Companion.getEP_NAME(), PyReferenceCustomTargetChecker.class);
@@ -457,6 +459,12 @@ public class PythonParser {
     PsiFileFactoryImpl psiFileFactory = new PsiFileFactoryImpl(psiManager);
     project.registerService(PsiFileFactory.class, psiFileFactory);
     return psiFileFactory;
+  }
+
+  private static class MyPythonFileTypeFactory extends FileTypeFactory {
+    public void createFileTypes(@NonNls @NotNull FileTypeConsumer consumer) {
+      consumer.consume(PythonFileType.INSTANCE, "py;pyw;");
+    }
   }
 
   protected static <T> void registerExtension(@NotNull ExtensionPointName<T> extensionPointName, @NotNull T t) {
