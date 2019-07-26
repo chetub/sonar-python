@@ -250,7 +250,7 @@
                     <include>kotlin/collections/CollectionsKt__MutableCollectionsKt.class</include>
                     <include>kotlin/collections/CollectionsKt__ReversedViewsKt.class</include>
                     <include>kotlin/collections/CollectionsKt___CollectionsJvmKt.class</include>
-                    <include>kotlin/collections/CollectionsKt___CollectionsKt$asSequence$$inlined$Sequence$1.class</include>
+                    <include>kotlin/collections/CollectionsKt___CollectionsKt$asSequence??inlined$Sequence$1.class</include>
                     <include>kotlin/collections/CollectionsKt___CollectionsKt.class</include>
                     <include>kotlin/collections/EmptyIterator.class</include>
                     <include>kotlin/collections/EmptyList.class</include>
@@ -924,6 +924,10 @@
                     <include>com/intellij/util/messages/impl/MessageBusImpl$1.class</include>
                     <include>com/intellij/util/messages/impl/MessageBusImpl$RootBus.class</include>
                     <include>com/intellij/util/messages/impl/MessageBusImpl.class</include>
+                    <include>com/intellij/util/ref/DebugReflectionUtil.class</include>
+                    <include>com/intellij/util/ref/DebugReflectionUtil$1.class</include>
+                    <include>com/intellij/util/ref/DebugReflectionUtil$2.class</include>
+                    <include>com/intellij/util/ref/DebugReflectionUtil$BackLink.class</include>
                     <include>com/intellij/util/text/ByteArrayCharSequence.class</include>
                     <include>com/intellij/util/text/CaseInsensitiveStringHashingStrategy.class</include>
                     <include>com/intellij/util/text/CharArrayCharSequence.class</include>
@@ -1448,7 +1452,7 @@
                     <include>com/jetbrains/python/codeInsight/stdlib/PyNamedTupleOverridingTypeProvider.class</include>
                     <include>com/jetbrains/python/codeInsight/stdlib/PyNamedTupleType$DefinitionLevel.class</include>
                     <include>com/jetbrains/python/codeInsight/stdlib/PyNamedTupleType.class</include>
-                    <include>com/jetbrains/python/codeInsight/stdlib/PyNamedTupleTypeProvider$Companion$getNamedTupleTypeForCallee$$inlined$filterIsInstance$1.class</include>
+                    <include>com/jetbrains/python/codeInsight/stdlib/PyNamedTupleTypeProvider$Companion$getNamedTupleTypeForCallee??inlined$filterIsInstance$1.class</include>
                     <include>com/jetbrains/python/codeInsight/stdlib/PyNamedTupleTypeProvider$Companion$isTypingNamedTupleDirectInheritor$isTypingNT$1.class</include>
                     <include>com/jetbrains/python/codeInsight/stdlib/PyNamedTupleTypeProvider$Companion.class</include>
                     <include>com/jetbrains/python/codeInsight/stdlib/PyNamedTupleTypeProvider.class</include>

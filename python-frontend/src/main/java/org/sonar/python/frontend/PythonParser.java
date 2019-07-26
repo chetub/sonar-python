@@ -199,6 +199,10 @@ import javax.annotation.Nullable;
 import kotlin.jvm.functions.Function1;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jps.model.fileTypes.FileNameMatcherFactory;
+import org.jetbrains.jps.model.fileTypes.impl.FileNameMatcherFactoryImpl;
+import org.jetbrains.jps.service.JpsServiceManager;
+import org.jetbrains.jps.service.impl.JpsServiceManagerImpl;
 
 public class PythonParser {
 
@@ -256,8 +260,8 @@ public class PythonParser {
   }
 
   private static PsiFileFactory psiFileFactory() {
-//    System.setProperty("idea.home.path", "/Users/mpaladin/projects/sonar-python/pycharm-community-2019.1.3/");
     System.setProperty("idea.home.path", ".");
+    System.setProperty("apple.awt.UIElement", "true");
     CoreFileTypeRegistry fileTypeRegistry = new CoreFileTypeRegistry();
     fileTypeRegistry.registerFileType(PythonFileType.INSTANCE, "py");
     FileTypeRegistry.ourInstanceGetter = new StaticGetter<>(fileTypeRegistry);
@@ -418,6 +422,9 @@ public class PythonParser {
     project.registerService(SchemeManagerFactory.class, schemeManagerFactory);
     project.registerService(PyPsiFacade.class, new PyPsiFacadeImpl(project));
 
+    project.registerService(JpsServiceManager.class, new JpsServiceManagerImpl());
+    project.registerService(FileNameMatcherFactory.class, new FileNameMatcherFactoryImpl());
+
     fileSystem = new CoreLocalFileSystem();
     VirtualFileSystem[] fs = new VirtualFileSystem[]{fileSystem};
     VirtualFileManagerImpl virtualFileManager = new VirtualFileManagerImpl(fs, project.getMessageBus());
@@ -525,7 +532,7 @@ public class PythonParser {
   }
 
   public static Sdk create(final String version, @NotNull final VirtualFile... additionalRoots) {
-    final String mock_path = "/Users/mpaladin/projects/intellij-community/python/testData" + "/MockSdk" + version + "/";
+    final String mock_path = "/Users/andrea/git_clone/intellij-community/python/testData" + "/MockSdk" + version + "/";
 
     String sdkHome = new File(mock_path, "bin/python" + version).getPath();
     SdkType sdkType = PythonSdkType.getInstance();
@@ -538,10 +545,10 @@ public class PythonParser {
     }
 
 //    roots.putValue(OrderRootType.CLASSES, PyUserSkeletonsUtil.getUserSkeletonsDirectory());
-//    roots.putValue(OrderRootType.CLASSES, fileSystem.findFileByPath("/Users/mpaladin/projects/intellij-community/python/helpers/typeshed/python-skeletons"));
+//    roots.putValue(OrderRootType.CLASSES, fileSystem.findFileByPath("/Users/andrea/git_clone/intellij-community/python/helpers/typeshed/python-skeletons"));
 
     final LanguageLevel level = LanguageLevel.fromPythonVersion(version);
-    final VirtualFile typeShedDir = fileSystem.findFileByPath("/Users/mpaladin/projects/intellij-community/python/helpers/typeshed");
+    final VirtualFile typeShedDir = fileSystem.findFileByPath("/Users/andrea/git_clone/intellij-community/python/helpers/typeshed");
     assert typeShedDir != null;
     PyTypeShed.INSTANCE.findRootsForLanguageLevel(level).forEach(path -> {
       final VirtualFile file = typeShedDir.findFileByRelativePath(path);

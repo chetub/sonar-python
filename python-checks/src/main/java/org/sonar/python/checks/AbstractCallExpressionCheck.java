@@ -63,7 +63,6 @@ public abstract class AbstractCallExpressionCheck extends PythonCheck {
 //          System.out.println("null: " + callee.getText());
         }
         TypeEvalContext typeEvalContext = TypeEvalContext.codeAnalysis(node.getContainingFile().getProject(), node.getContainingFile());
-        PyType type = typeEvalContext.getType(node);
 //        System.out.println("call return type: " + type);
         PsiElement resolve = reference.resolve();
 //        System.out.println(resolve);

@@ -80,7 +80,8 @@ public class ClassLoaderLogAnalyzer {
           packageLines.stream()
             .map(Line::classFileName)
             .sorted()
-            .map(l -> "    <include>" + l + "</include>")
+            // replace $$ in .class file name with ?? because maven shade doesn't include patterns with $$
+            .map(l -> "    <include>" + l.replaceAll("\\$\\$", "??") + "</include>")
             .forEach(System.out::println);
         }
       }

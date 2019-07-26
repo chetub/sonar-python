@@ -66,6 +66,7 @@ public class ParserCaller {
     test.python3_f_string();
     test.real_files("its/sources");
     test.real_files("python-checks/src/test/resources/checks");
+    System.out.println("end");
   }
 
   private void python3_f_string() {
